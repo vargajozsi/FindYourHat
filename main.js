@@ -14,10 +14,10 @@ class Field {
     this.x = 0;
     this.y = 0;
   }
-//--generate a new field from h-w dimension
+  //--generate a new field from h-w dimension
   static generateField(h, w, p) {
     let field2 = Array.from(Array(h), () => new Array(w));
-   //calculate the hole rate from parameter p
+    //calculate the hole rate from parameter p
     let holeRate = Math.ceil(h * w * (p / 100));
     //let patternField = [hole, fieldCharacter];
 
@@ -27,7 +27,7 @@ class Field {
         field2[i][j] = fieldCharacter;
       }
     }
-    //--fill up the field with hole character in specified proportion 
+    //--fill up the field with hole character in specified proportion
     do {
       let xArray = Math.floor(Math.random() * field2.length);
       let yArray = Math.floor(Math.random() * field2[0].length);
@@ -39,7 +39,7 @@ class Field {
     } while (
       field2.flat().filter((element) => element === hole).length < holeRate
     );
-    
+
     //--add Hat charachter to the random free position
     let noPass = true;
     while (noPass) {
@@ -53,7 +53,7 @@ class Field {
 
     return field2;
   }
-//static method to clear the screen
+  //static method to clear the screen
   static clear() {
     console.log(blank);
     readline.cursorTo(process.stdout, 0, 0);
@@ -79,12 +79,12 @@ class Field {
     console.log("Out of bound... end of game");
     this.success = 1;
   }
-// warning of success
+  // warning of success
   gameWin() {
     console.log("Success!!! You found your hat.");
     this.success = 1;
   }
-//warning of lalling down a hole
+  //warning of lalling down a hole
   findHole() {
     console.log("You fell down a hole... end of game");
     this.success = 1;
@@ -186,7 +186,7 @@ class Field {
     }
   }
 
-// hard mode modification on the field -- calc the place of hole and drawing
+  // hard mode modification on the field -- calc the place of hole and drawing
   letHardMode() {
     let noPass = true;
     while (noPass) {
@@ -229,8 +229,7 @@ class Field {
   }
 }
 
-
-//create an instance of Feld - generatefield parameters: (height, width, percent of hole) 
+//create an instance of Feld - generatefield parameters: (height, width, percent of hole)
 const myField = new Field(Field.generateField(10, 10, 10));
 //call the starter method
 myField.userQuestion();
