@@ -18,7 +18,6 @@ class Field {
   }
 
   static generateField(h, w, p) {
-    
     let field2 = Array.from(Array(h), () => new Array(w));
     let holeRate = Math.ceil(h * w * (p / 100));
     //let patternField = [hole, fieldCharacter];
@@ -30,41 +29,42 @@ class Field {
       }
     }
     //--fill up with hole character
-    do  {
+    do {
       let xArray = Math.floor(Math.random() * field2.length);
       let yArray = Math.floor(Math.random() * field2[0].length);
       //--check of pathhcaracterposition
       if (xArray || yArray) {
-          field2[xArray][yArray] = hole;
-      } else {}
-    } while (field2.flat().filter(element => element === hole).length < holeRate);
-    //--add path beginn 
+        field2[xArray][yArray] = hole;
+      } else {
+      }
+    } while (
+      field2.flat().filter((element) => element === hole).length < holeRate
+    );
+    //--add path beginn
     //field2[0][0] = pathCharacter;
-    
+
     //--add Hat charachter to the random free position
     let noPass = true;
     while (noPass) {
-    let xArray2 = Math.floor(Math.random() * field2.length);
-    let yArray2 = Math.floor(Math.random() * field2[0].length);
-    if (field2[xArray2][yArray2] === fieldCharacter) {
-        field2[xArray2][yArray2] =  hat;
+      let xArray2 = Math.floor(Math.random() * field2.length);
+      let yArray2 = Math.floor(Math.random() * field2[0].length);
+      if (field2[xArray2][yArray2] === fieldCharacter) {
+        field2[xArray2][yArray2] = hat;
         noPass = false;
+      }
     }
-}
 
+    return field2;
+  }
 
-
-    return field2
-    /*field2.forEach((element) => {
-        console.log(...element);
-      });
-    */  }
-
-  print() {
+  static clear() {
     console.log(blank);
     readline.cursorTo(process.stdout, 0, 0);
     readline.clearScreenDown(process.stdout);
+  }
 
+  print() {
+    Field.clear();
     this.field.forEach((element) => {
       console.log(...element);
     });
@@ -91,8 +91,7 @@ class Field {
   }
 
   newUserStep(direction) {
-
-//--lets go
+    //--lets go
     switch (direction) {
       case "d":
         if (this.x + 1 < this.field.length) {
@@ -186,24 +185,44 @@ class Field {
     }
   }
 
+  letHardMode() {
+    let noPass = true;
+    while (noPass) {
+      let xArray2 = Math.floor(Math.random() * this.field.length);
+      let yArray2 = Math.floor(Math.random() * this.field[0].length);
+      if (this.field[xArray2][yArray2] === fieldCharacter) {
+        this.field[xArray2][yArray2] = hole;
+        noPass = false;
+      }
+    }
+  }
+
   userQuestion() {
-     //--add a startposition
-     let noPass = true;
-     while (noPass) {
-     let xArray2 = Math.floor(Math.random() * this.field.length);
-     let yArray2 = Math.floor(Math.random() * this.field[0].length);
-     if (this.field[xArray2][yArray2] === fieldCharacter) {
-         this.field[xArray2][yArray2] =  pathCharacter;
-         this.x = xArray2;
-         this.y = yArray2;
-         noPass = false;
-     }
- }
-    
+    //--add a startposition
+    let noPass = true;
+    while (noPass) {
+      let xArray2 = Math.floor(Math.random() * this.field.length);
+      let yArray2 = Math.floor(Math.random() * this.field[0].length);
+      if (this.field[xArray2][yArray2] === fieldCharacter) {
+        this.field[xArray2][yArray2] = pathCharacter;
+        this.x = xArray2;
+        this.y = yArray2;
+        noPass = false;
+      }
+    }
+    Field.clear();
+    //--is hard mode?
+    const hardMode = prompt("Do you play hard mode (y/n)? ");
+
+    //--print the field
     this.print();
+
+    //--repeat question til success
     while (!this.success) {
-      const userDirection = prompt("Which way?");
+      const userDirection = prompt("Which way (d/u/r/l)? ");
       this.newUserStep(userDirection);
+      if (hardMode === 'y') this.letHardMode();
+      
     }
   }
 }
