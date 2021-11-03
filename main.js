@@ -39,7 +39,8 @@ class Field {
       } else {}
     } while (field2.flat().filter(element => element === hole).length < holeRate);
     //--add path beginn 
-    field2[0][0] = pathCharacter;
+    //field2[0][0] = pathCharacter;
+    
     //--add Hat charachter to the random free position
     let noPass = true;
     while (noPass) {
@@ -90,6 +91,8 @@ class Field {
   }
 
   newUserStep(direction) {
+
+//--lets go
     switch (direction) {
       case "d":
         if (this.x + 1 < this.field.length) {
@@ -184,6 +187,19 @@ class Field {
   }
 
   userQuestion() {
+     //--add a startposition
+     let noPass = true;
+     while (noPass) {
+     let xArray2 = Math.floor(Math.random() * this.field.length);
+     let yArray2 = Math.floor(Math.random() * this.field[0].length);
+     if (this.field[xArray2][yArray2] === fieldCharacter) {
+         this.field[xArray2][yArray2] =  pathCharacter;
+         this.x = xArray2;
+         this.y = yArray2;
+         noPass = false;
+     }
+ }
+    
     this.print();
     while (!this.success) {
       const userDirection = prompt("Which way?");
