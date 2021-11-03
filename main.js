@@ -186,7 +186,7 @@ class Field {
   }
 
   userQuestion() {
-    this.generateField(6, 8, 20);
+    this.generateField(6, 8, 30);
     this.print();
     while (!this.success) {
       const userDirection = prompt("Which way?");
