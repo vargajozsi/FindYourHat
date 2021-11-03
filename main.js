@@ -13,22 +13,21 @@ class Field {
     this.success = 0;
     this.x = 0;
     this.y = 0;
-    this.height = 3;
-    this.width = 3;
   }
-
+//--generate a new field from h-w dimension
   static generateField(h, w, p) {
     let field2 = Array.from(Array(h), () => new Array(w));
+   //calculate the hole rate from parameter p
     let holeRate = Math.ceil(h * w * (p / 100));
     //let patternField = [hole, fieldCharacter];
 
-    //--fill up with feldcharacter
+    //--fill up the field with feldcharacter
     for (let i = 0; i < field2.length; i++) {
       for (let j = 0; j < field2[i].length; j++) {
         field2[i][j] = fieldCharacter;
       }
     }
-    //--fill up with hole character
+    //--fill up the field with hole character in specified proportion 
     do {
       let xArray = Math.floor(Math.random() * field2.length);
       let yArray = Math.floor(Math.random() * field2[0].length);
@@ -40,9 +39,7 @@ class Field {
     } while (
       field2.flat().filter((element) => element === hole).length < holeRate
     );
-    //--add path beginn
-    //field2[0][0] = pathCharacter;
-
+    
     //--add Hat charachter to the random free position
     let noPass = true;
     while (noPass) {
@@ -56,13 +53,14 @@ class Field {
 
     return field2;
   }
-
+//static method to clear the screen
   static clear() {
     console.log(blank);
     readline.cursorTo(process.stdout, 0, 0);
     readline.clearScreenDown(process.stdout);
   }
 
+  //print the field array in squer format
   print() {
     Field.clear();
     this.field.forEach((element) => {
@@ -70,26 +68,29 @@ class Field {
     });
   }
 
+  //draw pathcharacter to the last step
   reDrawFeld(x, y) {
     this.field[x][y] = pathCharacter;
     this.print();
   }
 
+  //warning of out of bound
   warningOutOfBound() {
     console.log("Out of bound... end of game");
     this.success = 1;
   }
-
+// warning of success
   gameWin() {
     console.log("Success!!! You found your hat.");
     this.success = 1;
   }
-
+//warning of lalling down a hole
   findHole() {
     console.log("You fell down a hole... end of game");
     this.success = 1;
   }
 
+  //calc a new step from user entered direction
   newUserStep(direction) {
     //--lets go
     switch (direction) {
@@ -185,6 +186,7 @@ class Field {
     }
   }
 
+// hard mode modification on the field -- calc the place of hole and drawing
   letHardMode() {
     let noPass = true;
     while (noPass) {
@@ -197,6 +199,7 @@ class Field {
     }
   }
 
+  //the main function of game
   userQuestion() {
     //--add a startposition
     let noPass = true;
@@ -221,11 +224,13 @@ class Field {
     while (!this.success) {
       const userDirection = prompt("Which way (d/u/r/l)? ");
       this.newUserStep(userDirection);
-      if (hardMode === 'y') this.letHardMode();
-      
+      if (hardMode === "y") this.letHardMode();
     }
   }
 }
 
+
+//create an instance of Feld - generatefield parameters: (height, width, percent of hole) 
 const myField = new Field(Field.generateField(10, 10, 10));
+//call the starter method
 myField.userQuestion();
